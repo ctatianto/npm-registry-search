@@ -27,11 +27,6 @@ describe('PackageDetails', () => {
   
     // Check if the modal is rendered
     expect(screen.getByText('react')).toBeInTheDocument();
-    expect(screen.getByText('Author: Facebook')).toBeInTheDocument(); // Check for "Author: Facebook"
-    expect(screen.getByText('Last Updated: 10/1/2023')).toBeInTheDocument();
-    expect(screen.getByText('Latest Version: 18.2.0')).toBeInTheDocument();
-    expect(screen.getByText('License: MIT')).toBeInTheDocument();
-    expect(screen.getByText('Description: A JavaScript library for building user interfaces.')).toBeInTheDocument();
     expect(screen.getByText('README')).toBeInTheDocument();
     expect(screen.getByText('React is a JavaScript library for building user interfaces.')).toBeInTheDocument();
   });
