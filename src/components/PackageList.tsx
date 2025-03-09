@@ -15,13 +15,6 @@ interface Package {
         description?: string;
         version?: string;
         license?: string;
-        keywords?: string[];
-        links?: {
-          npm?: string;
-          homepage?: string;
-          repository?: string;
-          bugs?: string;
-        };
       };
 }
 

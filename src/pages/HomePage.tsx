@@ -1,5 +1,5 @@
 // src/pages/HomePage.tsx
-import { useState } from 'react';
+import { useState, useCallback } from 'react'; // Add useCallback
 import { Container, Pagination, Typography } from '@mui/material';
 import SearchBar from '../components/SearchBar';
 import PackageList from '../components/PackageList';
@@ -14,9 +14,8 @@ const HomePage = () => {
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  const [loading, setLoading] = useState(false);
 
-  const handleSearch = async (query: string, page: number = 1) => {
+  const handleSearch = async (query: string, page: number) => {
     if (!query) {
       setPackages([]);
       setTotalPages(1); // Reset total pages
@@ -24,7 +23,6 @@ const HomePage = () => {
       return;
     }
 
-    setLoading(true); // Set loading to true
     try {
       const { objects, total } = await searchPackages(query, page);
       setPackages(objects);
@@ -34,8 +32,6 @@ const HomePage = () => {
       setError('Failed to fetch packages. Please try again.');
       setPackages([]);
       setTotalPages(1); // Reset total pages on error
-    } finally {
-      setLoading(false); // Set loading to false
     }
   };
 
@@ -59,9 +55,16 @@ const HomePage = () => {
     handleSearch(query, value); // Fetch new results for the selected page
   };
 
+  // Memoize handleNewSearch to prevent unnecessary re-renders
+  const handleNewSearch = useCallback((query: string) => {
+    setQuery(query); // Update the query state
+    setPage(1); // Reset page to 1 for a new search
+    handleSearch(query, 1); // Perform the search for the first page
+  }, []); // Empty dependency array ensures this function is memoized
+
   return (
     <Container>
-      <SearchBar onSearch={(query) => handleSearch(query, 1)} />
+      <SearchBar onSearch={handleNewSearch} /> {/* Use memoized handleNewSearch */}
       {error && (
         <Typography color="error" sx={{ mt: 2 }}>
           {error}
