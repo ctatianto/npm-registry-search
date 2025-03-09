@@ -14,6 +14,7 @@ const HomePage = () => {
   const [selectedPackage, setSelectedPackage] = useState<any>(null);
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleSearch = async (query: string, page: number = 1) => {
     if (!query) {
@@ -23,6 +24,7 @@ const HomePage = () => {
       return;
     }
 
+    setLoading(true); // Set loading to true
     try {
       const { objects, total } = await searchPackages(query, page);
       setPackages(objects);
@@ -32,6 +34,8 @@ const HomePage = () => {
       setError('Failed to fetch packages. Please try again.');
       setPackages([]);
       setTotalPages(1); // Reset total pages on error
+    } finally {
+      setLoading(false); // Set loading to false
     }
   };
 
@@ -51,7 +55,7 @@ const HomePage = () => {
   };
 
   const handlePageChange = (_: React.ChangeEvent<unknown>, value: number) => {
-    setPage(value);
+    setPage(value); // Update the page state
     handleSearch(query, value); // Fetch new results for the selected page
   };
 
@@ -63,7 +67,10 @@ const HomePage = () => {
           {error}
         </Typography>
       )}
-      <PackageList packages={packages} onPackageClick={handlePackageClick} />
+      <PackageList
+        packages={packages}
+        onPackageClick={handlePackageClick}
+      />
       {packages.length > 0 && ( // Conditionally render pagination
         <Pagination
           count={totalPages}

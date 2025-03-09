@@ -1,5 +1,5 @@
 // src/components/PackageDetails.tsx
-import { Modal, Box, Typography, Paper, IconButton } from '@mui/material';
+import { Modal, Box, Typography, Paper, IconButton, Divider, Chip } from '@mui/material';
 import CloseIcon from '@mui/icons-material/Close';
 
 interface PackageDetailsProps {
@@ -33,12 +33,12 @@ const PackageDetails = ({ packageData, open, onClose }: PackageDetailsProps) => 
           transform: 'translate(-50%, -50%)',
           width: '80%',
           maxWidth: '800px',
-          maxHeight: '80vh', // Fixed height (80% of viewport height)
+          maxHeight: '90vh', // Fixed height (80% of viewport height)
           bgcolor: 'background.paper',
           boxShadow: 24,
-          p: 4,
-          outline: 'none',
+          borderRadius: 2, // Rounded corners
           overflowY: 'auto', // Enable vertical scrolling
+          p: 3, // Padding
         }}
       >
         <IconButton
@@ -48,18 +48,50 @@ const PackageDetails = ({ packageData, open, onClose }: PackageDetailsProps) => 
         >
           <CloseIcon />
         </IconButton>
-        <Typography variant="h4">{packageData.name}</Typography>
-        <Typography>Author: {packageData.author?.name || 'Unknown'}</Typography>
-        <Typography>Last Updated: {lastUpdated !== 'N/A' ? new Date(lastUpdated).toLocaleDateString() : 'N/A'}</Typography>
-        <Typography>Latest Version: {latestVersion || 'N/A'}</Typography>
-        <Typography>License: {packageData.license || 'N/A'}</Typography>
-        <Typography>Description: {packageData.description || 'N/A'}</Typography>
+        <Typography variant="h4" component="h2" sx={{ fontWeight: 'bold', mb: 2 }}>
+          {packageData.name}
+        </Typography>
+        <Divider sx={{ mb: 2 }} /> {/* Divider for visual separation */}
+        <Box sx={{ mb: 2 }}>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            <strong>Author:</strong> {packageData.author?.name || 'Unknown'}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            <strong>Last Updated:</strong> {lastUpdated !== 'N/A' ? new Date(lastUpdated).toLocaleDateString() : 'N/A'}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            <strong>Latest Version:</strong> {latestVersion || 'N/A'}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 1 }}>
+            <strong>License:</strong> {packageData.license || 'N/A'}
+          </Typography>
+          <Typography variant="body1" sx={{ mb: 2 }}>
+          <strong>Description:</strong> {packageData.description || 'N/A'}
+        </Typography>
+        </Box>
+        <Divider sx={{ mb: 2 }} /> {/* Divider for visual separation */}
         {packageData.readme && (
-          <div>
-            <Typography variant="h6">README</Typography>
-            <pre style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word' }}>{packageData.readme}</pre>
-          </div>
+          <Box sx={{ mb: 2 }}>
+            <Typography variant="h6" sx={{ fontWeight: 'bold', mb: 1 }}>
+              README
+            </Typography>
+            <Paper
+              sx={{
+                p: 2,
+                bgcolor: 'background.default',
+                overflowX: 'auto',
+                maxHeight: '200px', // Fixed height for README section
+              }}
+            >
+              <pre style={{ whiteSpace: 'pre-wrap', wordWrap: 'break-word', margin: 0 }}>
+                {packageData.readme}
+              </pre>
+            </Paper>
+          </Box>
         )}
+        <Box sx={{ display: 'flex', justifyContent: 'flex-end', mt: 2 }}>
+          <Chip label="NPM Package" color="primary" />
+        </Box>
       </Box>
     </Modal>
   );
