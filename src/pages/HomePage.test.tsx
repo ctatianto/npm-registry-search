@@ -90,7 +90,7 @@ describe('HomePage', () => {
           },
         },
       ],
-      total: 10,
+      total: 12,
     });
   
     // Mock the searchPackages API response for the second page
@@ -104,7 +104,7 @@ describe('HomePage', () => {
           },
         },
       ],
-      total: 10,
+      total: 12,
     });
   
     render(<HomePage />);

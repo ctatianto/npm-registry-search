@@ -3,12 +3,12 @@ import axios from 'axios';
 
 const API_BASE_URL = 'https://registry.npmjs.org';
 
-export const searchPackages = async (query: string, page: number, size: number = 10) => {
+export const searchPackages = async (query: string, page: number, size: number = 12) => {
   try {
     const response = await axios.get(`${API_BASE_URL}/-/v1/search`, {
       params: {
         text: query,
-        size: 10,
+        size,
         from: (page - 1) * size, // Calculate the starting index for pagination
       },
     });

@@ -26,7 +26,7 @@ const HomePage = () => {
     try {
       const { objects, total } = await searchPackages(query, page);
       setPackages(objects);
-      setTotalPages(Math.ceil(total / 10)); // Calculate total pages based on total results
+      setTotalPages(Math.ceil(total / 12)); // Calculate total pages based on total results
       setError(null);
     } catch (err) {
       setError('Failed to fetch packages. Please try again.');
